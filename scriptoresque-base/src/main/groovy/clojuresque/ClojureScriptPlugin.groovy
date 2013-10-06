@@ -42,9 +42,12 @@ public class ClojureScriptPlugin implements Plugin<Project> {
     }
 
     private void configureConfigurations(Project project) {
+        def props = Util.properties("scriptoresque-base")
+
         project.dependencies {
-            clojuresque group: "clojuresque", name: "scriptoresque-base-runtime",
-                version: Util.properties.getProperty("clojuresque.version")
+            clojuresque group: "clojuresque",
+                name: "scriptoresque-base-runtime",
+                version: props.getProperty("clojuresque.scriptoresque-base.version")
         }
     }
 

@@ -33,7 +33,24 @@ project(':scriptoresque-base') {
         compile gradleApi()
         compile localGroovy()
 
-        compile 'clojuresque:clojuresque:1.6.0-SNAPSHOT'
+        compile 'clojuresque:clojuresque-common:1.0.0-SNAPSHOT'
+        compile "de.kotka.gradle:gradle-utils:0.1.1"
+
+        testCompile('org.spockframework:spock-core:0.7-groovy-1.8') {
+            exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+        }
+    }
+
+    compileGroovy {
+        sourceCompatibility = "1.6"
+        targetCompatibility = "1.6"
+    }
+
+    processResources {
+        inputs.property "version", {-> project.version}
+        from(sourceSets.main.resources.srcDirs) {
+            expand("version": project.version)
+        }
     }
 }
 
@@ -41,7 +58,7 @@ project(':scriptoresque-base-runtime') {
     apply plugin: 'java'
 
     dependencies {
-        compile 'clojuresque:clojuresque-runtime:1.6.0-SNAPSHOT'
+        compile 'clojuresque:clojuresque-common-runtime:1.0.0-SNAPSHOT'
     }
 }
 
