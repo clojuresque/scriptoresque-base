@@ -22,4 +22,5 @@
                                {:optimizations optimizations})
                              (when target
                                {:target target}))]
-    (cljsc/build input-dir options)))
+    (cljsc/build input-dir options))
+  true)
