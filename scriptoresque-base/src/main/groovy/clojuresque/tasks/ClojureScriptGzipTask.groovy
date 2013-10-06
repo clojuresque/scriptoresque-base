@@ -23,35 +23,25 @@
 
 package clojuresque.tasks
 
+import kotka.gradle.utils.Delayed
+
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.SourceTask
 import org.gradle.api.tasks.TaskAction
 
-import java.io.File
-
 public class ClojureScriptGzipTask extends SourceTask {
-    def File destinationDir
-    def String archiveName = null
+    @OutputFile
+    @Delayed
+    def archiveFile
 
     @InputFile
     File getInputFile() {
         return source.singleFile
     }
 
-    @OutputFile
-    File getArchivePath() {
-        String archive
-        if (archiveName != null)
-            archive = archiveName
-        else
-            archive = inputFile.name + ".gz"
-
-        return project.file("${destinationDir}/${archive}")
-    }
-
     @TaskAction
     void gzip() {
-        ant.gzip(src: inputFile.path, destfile: archivePath.path)
+        ant.gzip(src: inputFile.path, destfile: archiveFile.path)
     }
 }

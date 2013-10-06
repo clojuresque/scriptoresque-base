@@ -80,24 +80,26 @@ public class ClojureScriptPlugin implements Plugin<Project> {
         project.sourceSets.all { set ->
             if (set.equals(project.sourceSets.test))
                 return
-            def File destDir = project.file(
-                String.format("%s/javascript/%s", project.buildDir.path, set.name))
 
             String taskName = set.getCompileTaskName("clojureScript")
-            ClojureScriptCompileTask task = project.tasks.add(name: taskName,
-                    type: ClojureScriptCompileTask.class) {
-                destinationDir = destDir
-                outputFile = project.file("${destDir}/all.js")
+            ClojureScriptCompileTask task = project.task(taskName,
+                    type: ClojureScriptCompileTask) {
+                delayedDestinationDir = {
+                    project.file("${project.buildDir.path}/gclosure/${set.name}")
+                }
+                delayedOutputFile = {
+                    project.file("${project.buildDir.path}/javascript/${set.name}.js")
+                }
                 source set.clojureScript
                 clojureScriptRoots = set.clojureScript
-                classpath = project.files(
-                    set.compileClasspath,
-                    set.clojure.srcDirs,
-                    project.configurations.development
-                )
-                description =
-                    String.format("Compile the %s ClojureScript source.",
-                            set.name)
+                delayedClasspath = {
+                    project.files(
+                        (set.hasProperty("clojure") ? set["clojure"].srcDirs : []),
+                        set.compileClasspath,
+                        project.configurations.clojureScript
+                    )
+                }
+                description = "Compile the ${set.name} ClojureScript source."
             }
             project.tasks[set.classesTaskName].dependsOn task
         }
@@ -107,20 +109,18 @@ public class ClojureScriptPlugin implements Plugin<Project> {
         project.sourceSets.all { set ->
             if (set.equals(project.sourceSets.test))
                 return
-            def File destDir = project.file(
-                String.format("%s/javascript/%s", project.buildDir.path, set.name))
 
             String compileTaskName = set.getCompileTaskName("clojureScript")
             ClojureScriptCompileTask compileTask = project.tasks[compileTaskName]
 
             String taskName = set.getTaskName("gzip", "clojureScript")
-            ClojureScriptGzipTask gzipTask = project.tasks.add(name: taskName,
-                    type: ClojureScriptGzipTask.class) {
-                destinationDir = destDir
+            ClojureScriptGzipTask gzipTask = project.task(taskName,
+                    type: ClojureScriptGzipTask) {
+                delayedArchiveFile = {
+                    project.file("${project.buildDir.path}/javascript/${set.name}.js.gz")
+                }
                 source compileTask
-                description =
-                    String.format("Gzip the %s ClojureScript compilate.",
-                            set.name)
+                description = "Gzip the ${set.name} ClojureScript compilate."
             }
         }
     }

@@ -23,9 +23,11 @@
 
 package clojuresque.tasks
 
-import org.gradle.api.file.FileCollection
-import org.gradle.api.file.SourceDirectorySet
+import kotka.gradle.utils.ConfigureUtil
+import kotka.gradle.utils.Delayed
+
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.StopExecutionException
 import org.gradle.api.tasks.TaskAction
@@ -36,37 +38,37 @@ import java.io.InputStream
 import groovy.lang.Closure
 
 public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
-    def String optimisations = "advanced"
-    def String target = null
-    def boolean pretty = false
+    def optimisations = "advanced"
+    def target = null
+    def pretty = false
 
-    def File destinationDir
-    def File outputFile
-    def FileCollection classpath
-    def SourceDirectorySet clojureScriptRoots
-    def Closure jvmOptions = {}
+    @OutputDirectory
+    @Delayed
+    def destinationDir
 
     @OutputFile
-    public File getOutputFile() {
-        return this.outputFile
-    }
+    @Delayed
+    def outputFile
 
     @InputFiles
-    public FileCollection getClasspath() {
-        return this.classpath
-    }
+    @Delayed
+    def classpath
+
+    def clojureScriptRoots
+    def jvmOptions = {}
 
     @TaskAction
     public void compile() {
-        if (destinationDir == null) {
+        def destDir = this.getDestinationDir()
+        if (destDir == null) {
             throw new StopExecutionException("destinationDir not set!")
         }
-        destinationDir.mkdirs()
+        destDir.mkdirs()
 
         List<String> options = [
             "-i", clojureScriptRoots.srcDirs.iterator().next().path,
-            "-d", destinationDir.path,
-            "-o", outputFile.path,
+            "-d", destDir.path,
+            "-o", this.getOutputFile().path,
             "-O", optimisations,
         ]
 
@@ -80,7 +82,7 @@ public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
         }
 
         project.clojureexec {
-            this.jvmOptions()
+            ConfigureUtil.configure delegate, this.jvmOptions
             classpath = project.files(
                 this.clojureScriptRoots.srcDirs,
                 this.classpath
