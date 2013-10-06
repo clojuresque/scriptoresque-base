@@ -33,6 +33,7 @@ import org.gradle.api.internal.project.ProjectInternal
 
 public class ClojureScriptBasePlugin implements Plugin<Project> {
     public void apply(Project project) {
+        project.apply plugin: "java"
         project.apply plugin: "clojure-common"
 
         configureConfigurations(project)
