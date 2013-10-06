@@ -36,12 +36,23 @@ public class ClojureScriptPlugin implements Plugin<Project> {
         project.apply plugin: ClojureBasePlugin.class
 
         configureConfigurations(project)
+        configureRuntime(project)
         configureSourceSets(project)
         configureCompilation(project)
         configureGzip(project)
     }
 
     private void configureConfigurations(Project project) {
+        project.configurations {
+            clojureScript {
+                transitive = true
+                visible = false
+                description = "ClojureScript configuration to be used for tooling"
+            }
+        }
+    }
+
+    private void configureRuntime(Project project) {
         def props = Util.properties("scriptoresque-base")
 
         project.dependencies {
