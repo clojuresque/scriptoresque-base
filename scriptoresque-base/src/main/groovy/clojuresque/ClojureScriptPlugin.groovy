@@ -65,7 +65,7 @@ public class ClojureScriptPlugin implements Plugin<Project> {
     private void configureSourceSets(Project project) {
         ProjectInternal projectInternal = (ProjectInternal)project
 
-        project.sourceSets.each { sourceSet ->
+        project.sourceSets.all { sourceSet ->
             ClojureScriptSourceSet clojureScriptSourceSet =
                 new ClojureScriptSourceSet(sourceSet.name, projectInternal.fileResolver)
 
@@ -77,7 +77,7 @@ public class ClojureScriptPlugin implements Plugin<Project> {
     }
 
     private void configureCompilation(Project project) {
-        project.sourceSets.each { set ->
+        project.sourceSets.all { set ->
             if (set.equals(project.sourceSets.test))
                 return
             def File destDir = project.file(
@@ -104,7 +104,7 @@ public class ClojureScriptPlugin implements Plugin<Project> {
     }
 
     private void configureGzip(Project project) {
-        project.sourceSets.each { set ->
+        project.sourceSets.all { set ->
             if (set.equals(project.sourceSets.test))
                 return
             def File destDir = project.file(
