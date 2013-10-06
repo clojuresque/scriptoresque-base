@@ -39,7 +39,7 @@ public class ClojureScriptPlugin implements Plugin<Project> {
 
     private void configureConfigurations(Project project) {
         project.dependencies {
-            clojuresque group: "clojuresque", name: "scriptoresque-runtime",
+            clojuresque group: "clojuresque", name: "scriptoresque-base-runtime",
                 version: Util.properties.getProperty("clojuresque.version")
         }
     }
