@@ -15,7 +15,7 @@ subprojects {
     }
 }
 
-project(':scriptoresque') {
+project(':scriptoresque-base') {
     apply {
         plugin 'groovy'
     }
@@ -30,7 +30,7 @@ project(':scriptoresque') {
     }
 }
 
-project(':scriptoresque-runtime') {
+project(':scriptoresque-base-runtime') {
     apply {
         plugin 'java'
     }
