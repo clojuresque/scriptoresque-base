@@ -1,5 +1,5 @@
 /*-
- * Copyright 2012 © Meikel Brandmeyer.
+ * Copyright 2012,2013 © Meikel Brandmeyer.
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -22,6 +22,10 @@
  */
 
 package clojuresque
+
+import clojuresque.tasks.ClojureScriptCompileTask
+import clojuresque.tasks.ClojureScriptGzipTask
+import clojuresque.tasks.ClojureScriptSourceSet
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
