@@ -1,90 +1,50 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "http://clojars.org/repo" }
+    }
+
+    dependencies {
+        classpath "de.kotka.gradle:gradle-plugin:1.1.0"
+    }
+}
+
 subprojects {
+    ext.kotka = [
+        repository:     "clojuresque/cljs-base",
+        wrapperVersion: "1.8"
+    ]
+
+    apply plugin: "kotka"
+
     group = 'clojuresque'
     version = '0.1.0-SNAPSHOT'
 
-    ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-
-    apply {
-        plugin 'signing'
-        plugin 'maven'
-    }
-
     repositories {
-        maven { url "http://127.0.0.1:8080/repository/internal" }
         mavenCentral()
+        maven { url "http://clojars.org/repo" }
     }
 }
 
 project(':scriptoresque-base') {
-    apply {
-        plugin 'groovy'
-    }
+    apply plugin: 'groovy'
 
     dependencies {
         compile gradleApi()
-        // Workaround for milestone4
-        compile fileTree(dir: "${gradle.gradleHomeDir}/lib/plugins", include: '**/*.jar')
-        compile 'clojuresque:clojuresque:1.6.0-SNAPSHOT'
+        compile localGroovy()
 
-        groovy localGroovy()
+        compile 'clojuresque:clojuresque:1.6.0-SNAPSHOT'
     }
 }
 
 project(':scriptoresque-base-runtime') {
-    apply {
-        plugin 'java'
-    }
+    apply plugin: 'java'
 
     dependencies {
         compile 'clojuresque:clojuresque-runtime:1.6.0-SNAPSHOT'
     }
 }
 
-subprojects {
-    configurations {
-        deployerJars
-    }
-
-    dependencies {
-        deployerJars 'org.apache.maven.wagon:wagon-http-lightweight:2.2'
-    }
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                configuration = configurations.deployerJars
-                repository(url: "https://clojars.org/repo") {
-                    authentication(
-                        userName: project.properties["clojuresque.clojars.username"],
-                        password: project.properties["clojuresque.clojars.password"]
-                    )
-                }
-                pom.project {
-                    licenses {
-                        license {
-                            name 'MIT License'
-                            url 'http://opensource.org/licenses/MIT'
-                            distribution 'repo'
-                        }
-                    }
-                    description "A ClojureScript plugin for the Gradle build system"
-                    url "http://bitbucket.org/clojuresque/scriptoresque"
-                    scm {
-                        connection 'scm:hg:hg@bitbucket.org:clojuresque/scriptoresque'
-                        developerConnection 'scm:hg:hg@bitbucket.org:clojuresque/scriptoresque'
-                        url 'hg@bitbucket.org:clojuresque/scriptoresque'
-                    }
-                }
-                beforeDeployment { signing.signPom(it) }
-            }
-        }
-    }
-
-    signing {
-        sign configurations.archives
-    }
-}
-
 task wrapper(type: Wrapper) {
-    gradleVersion = "1.0"
+    gradleVersion = "1.8"
 }
