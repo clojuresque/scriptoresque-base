@@ -11,7 +11,7 @@ buildscript {
 
 subprojects {
     ext.kotka = [
-        repository:     "clojuresque/cljs-base",
+        repository:     "clojuresque/scriptoresque-base",
         wrapperVersion: "1.8"
     ]
 
