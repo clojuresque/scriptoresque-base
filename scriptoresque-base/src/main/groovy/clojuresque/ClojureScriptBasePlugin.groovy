@@ -120,7 +120,7 @@ public class ClojureScriptBasePlugin implements Plugin<Project> {
                 delayedArchiveFile = {
                     project.file("${project.buildDir.path}/javascript/${set.name}.js.gz")
                 }
-                source compileTask
+                source { compileTask.outputFileBuildable }
                 description = "Gzip the ${set.name} ClojureScript compilate."
             }
         }
