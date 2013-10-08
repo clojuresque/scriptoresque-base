@@ -96,8 +96,8 @@ public class ClojureScriptBasePlugin implements Plugin<Project> {
                 delayedClasspath = {
                     project.files(
                         (set.hasProperty("clojure") ? set["clojure"].srcDirs : []),
-                        set.compileClasspath,
-                        project.configurations.clojureScript
+                        project.configurations.clojureScript,
+                        set.compileClasspath
                     )
                 }
                 description = "Compile the ${set.name} ClojureScript source."
