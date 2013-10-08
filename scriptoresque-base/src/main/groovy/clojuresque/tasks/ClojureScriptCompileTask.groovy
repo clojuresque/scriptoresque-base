@@ -57,6 +57,10 @@ public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
     def clojureScriptRoots
     def jvmOptions = {}
 
+    def getOutputFileBuildable() {
+        project.files(getOutputFile()).builtBy(this)
+    }
+
     @TaskAction
     public void compile() {
         def destDir = this.getDestinationDir()
