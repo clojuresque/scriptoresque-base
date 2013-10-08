@@ -35,13 +35,8 @@ public class ClojureScriptGzipTask extends SourceTask {
     @Delayed
     def archiveFile
 
-    @InputFile
-    File getInputFile() {
-        return source.singleFile
-    }
-
     @TaskAction
     void gzip() {
-        ant.gzip(src: inputFile.path, destfile: archiveFile.path)
+        ant.gzip(src: source.singleFile.path, destfile: archiveFile.path)
     }
 }
