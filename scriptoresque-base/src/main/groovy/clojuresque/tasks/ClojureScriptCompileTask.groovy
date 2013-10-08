@@ -38,7 +38,7 @@ import java.io.InputStream
 import groovy.lang.Closure
 
 public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
-    def optimisations = "advanced"
+    def optimizations = "advanced"
     def target = null
     def pretty = false
 
@@ -69,7 +69,7 @@ public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
             "-i", clojureScriptRoots.srcDirs.iterator().next().path,
             "-d", destDir.path,
             "-o", this.getOutputFile().path,
-            "-O", optimisations,
+            "-O", optimizations,
         ]
 
         if (target != null) {
