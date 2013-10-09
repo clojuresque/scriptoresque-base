@@ -37,6 +37,6 @@ public class ClojureScriptGzipTask extends SourceTask {
 
     @TaskAction
     void gzip() {
-        ant.gzip(src: source.singleFile.path, destfile: archiveFile.path)
+        ant.gzip(src: source.singleFile.path, destfile: getArchiveFile().path)
     }
 }
