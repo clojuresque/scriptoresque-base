@@ -26,6 +26,7 @@ package clojuresque.tasks
 import kotka.gradle.utils.ConfigureUtil
 import kotka.gradle.utils.Delayed
 
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
@@ -33,8 +34,13 @@ import org.gradle.api.tasks.StopExecutionException
 import org.gradle.api.tasks.TaskAction
 
 public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
+    @Input
     def optimizations = "advanced"
+
+    @Input
     def target = null
+
+    @Input
     def pretty = false
 
     @OutputDirectory
