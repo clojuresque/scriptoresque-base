@@ -32,11 +32,6 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.StopExecutionException
 import org.gradle.api.tasks.TaskAction
 
-import java.io.File
-import java.io.InputStream
-
-import groovy.lang.Closure
-
 public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
     def optimizations = "advanced"
     def target = null
