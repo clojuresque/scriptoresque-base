@@ -31,6 +31,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.internal.project.ProjectInternal
 
+import kotka.gradle.utils.FileUtil
+
 public class ClojureScriptBasePlugin implements Plugin<Project> {
     public void apply(Project project) {
         project.apply plugin: "java"
@@ -71,7 +73,9 @@ public class ClojureScriptBasePlugin implements Plugin<Project> {
                 new ClojureScriptSourceSet(sourceSet.name, projectInternal.fileResolver)
 
             sourceSet.convention.plugins.clojureScript = clojureScriptSourceSet
-            sourceSet.clojureScript.srcDirs = [ String.format("src/%s/cljs", sourceSet.name) ]
+            sourceSet.clojureScript.srcDirs = [
+                FileUtil.file("src", sourceSet.name, "cljs")
+            ]
             sourceSet.resources.filter.exclude("**/*.cljs")
             sourceSet.allSource.source(clojureScriptSourceSet.clojureScript)
         }
@@ -86,10 +90,10 @@ public class ClojureScriptBasePlugin implements Plugin<Project> {
             ClojureScriptCompileTask task = project.task(taskName,
                     type: ClojureScriptCompileTask) {
                 delayedDestinationDir = {
-                    project.file("${project.buildDir.path}/gclosure/${set.name}")
+                    FileUtil.file(project.buildDir, "gclosure", set.name)
                 }
                 delayedOutputFile = {
-                    project.file("${project.buildDir.path}/javascript/${set.name}.js")
+                    FileUtil.file(project.buildDir, "javascript", set.name)
                 }
                 source set.clojureScript
                 clojureScriptRoots = set.clojureScript
@@ -118,7 +122,7 @@ public class ClojureScriptBasePlugin implements Plugin<Project> {
             ClojureScriptGzipTask gzipTask = project.task(taskName,
                     type: ClojureScriptGzipTask) {
                 delayedArchiveFile = {
-                    project.file("${project.buildDir.path}/javascript/${set.name}.js.gz")
+                    FileUtil.file(project.buildDir, "javascript", "${set.name}.js.gz")
                 }
                 source { compileTask.outputFileBuildable }
                 description = "Gzip the ${set.name} ClojureScript compilate."
