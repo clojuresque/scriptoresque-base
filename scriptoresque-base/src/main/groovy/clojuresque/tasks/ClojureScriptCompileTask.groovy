@@ -47,9 +47,11 @@ public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
     @Delayed
     def destinationDir
 
-    @OutputFile
     @Delayed
-    def outputFile
+    def closureDir
+
+    @Delayed
+    def outputFileName
 
     @InputFiles
     @Delayed
@@ -58,8 +60,12 @@ public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
     def clojureScriptRoots
     def jvmOptions = {}
 
+    def getOutputFile() {
+        FileUtil.file(getDestinationDir(), getOutputFileName())
+    }
+
     def getOutputFileBuildable() {
-        project.files(getOutputFile()).builtBy(this)
+        project.files(outputFile).builtBy(this)
     }
 
     @TaskAction
@@ -70,10 +76,21 @@ public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
         }
         destDir.mkdirs()
 
+        def cDir = this.getClosureDir()
+        if (cDir == null) {
+            throw new StopExecutionException("closureDir not set!")
+        }
+        cDir.mkdirs()
+
+        if (getOutputFileName() == null) {
+            throw new StopExecutionException("outputFileName not set!")
+        }
+        outputFile.parent.mkdirs()
+
         List<String> options = [
             "-i", clojureScriptRoots.srcDirs.iterator().next().path,
-            "-d", destDir.path,
-            "-o", this.getOutputFile().path,
+            "-d", cDir.path,
+            "-o", outputFile.path,
             "-O", optimizations,
         ]
 

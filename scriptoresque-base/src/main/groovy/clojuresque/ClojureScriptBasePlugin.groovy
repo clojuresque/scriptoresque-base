@@ -93,11 +93,12 @@ public class ClojureScriptBasePlugin implements Plugin<Project> {
                 target = "none"
                 pretty = false
                 delayedDestinationDir = {
-                    FileUtil.file(project.buildDir, "gclosure", set.name)
-                }
-                delayedOutputFile = {
                     FileUtil.file(project.buildDir, "javascript", set.name)
                 }
+                delayedClosureDir = {
+                    FileUtil.file(project.buildDir, "gclosure", set.name)
+                }
+                outputFileName = "${set.name}.js"
                 source set.clojureScript
                 clojureScriptRoots = set.clojureScript
                 delayedClasspath = {
@@ -109,7 +110,7 @@ public class ClojureScriptBasePlugin implements Plugin<Project> {
                 }
                 description = "Compile the ${set.name} ClojureScript source."
             }
-            set.output.dir(builtBy: task, { task.outputFile })
+            set.output.dir task
         }
     }
 
