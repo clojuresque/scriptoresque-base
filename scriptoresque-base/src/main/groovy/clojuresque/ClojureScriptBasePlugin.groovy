@@ -29,6 +29,7 @@ import clojuresque.tasks.ClojureScriptSourceSet
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.Delete
 import org.gradle.api.internal.project.ProjectInternal
 
 import kotka.gradle.utils.FileUtil
@@ -111,6 +112,12 @@ public class ClojureScriptBasePlugin implements Plugin<Project> {
                 description = "Compile the ${set.name} ClojureScript source."
             }
             set.output.dir task
+        }
+
+        String cleanTaskName = set.getTaskName("clean", "compileClojureScript")
+        project.task(cleanTaskName, type: Delete) {
+            delete { task.destinationDir }
+            delete { task.closureDir }
         }
     }
 
