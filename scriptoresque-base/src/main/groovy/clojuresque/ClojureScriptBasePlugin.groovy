@@ -89,6 +89,9 @@ public class ClojureScriptBasePlugin implements Plugin<Project> {
             String taskName = set.getCompileTaskName("clojureScript")
             ClojureScriptCompileTask task = project.task(taskName,
                     type: ClojureScriptCompileTask) {
+                optimizations = "advanced"
+                target = "none"
+                pretty = false
                 delayedDestinationDir = {
                     FileUtil.file(project.buildDir, "gclosure", set.name)
                 }

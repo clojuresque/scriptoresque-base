@@ -35,13 +35,13 @@ import org.gradle.api.tasks.TaskAction
 
 public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
     @Input
-    def optimizations = "advanced"
+    def optimizations
 
     @Input
-    def target = null
+    def target
 
     @Input
-    def pretty = false
+    def pretty
 
     @OutputDirectory
     @Delayed
@@ -77,7 +77,7 @@ public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
             "-O", optimizations,
         ]
 
-        if (target != null) {
+        if (!target.equals("none")) {
             options.add("-t")
             options.add(target)
         }
