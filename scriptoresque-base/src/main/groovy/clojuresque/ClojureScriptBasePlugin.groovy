@@ -130,7 +130,6 @@ public class ClojureScriptBasePlugin implements Plugin<Project> {
                 source { compileTask.outputFileBuildable }
                 description = "Gzip the ${set.name} ClojureScript compilate."
             }
-            set.output.dir gzipTask
         }
     }
 }
