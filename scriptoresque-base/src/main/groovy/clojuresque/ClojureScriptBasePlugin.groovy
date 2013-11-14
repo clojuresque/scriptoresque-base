@@ -112,12 +112,12 @@ public class ClojureScriptBasePlugin implements Plugin<Project> {
                 description = "Compile the ${set.name} ClojureScript source."
             }
             set.output.dir task
-        }
 
-        String cleanTaskName = set.getTaskName("clean", "compileClojureScript")
-        project.task(cleanTaskName, type: Delete) {
-            delete { task.destinationDir }
-            delete { task.closureDir }
+            String cleanTaskName = set.getTaskName("clean", "compileClojureScript")
+            project.task(cleanTaskName, type: Delete) {
+                delete { task.destinationDir }
+                delete { task.closureDir }
+            }
         }
     }
 
