@@ -93,6 +93,7 @@ public class ClojureScriptBasePlugin implements Plugin<Project> {
                 optimizations = "advanced"
                 target = "none"
                 pretty = false
+                incremental = true
                 delayedDestinationDir = {
                     FileUtil.file(project.buildDir, "javascript", set.name)
                 }

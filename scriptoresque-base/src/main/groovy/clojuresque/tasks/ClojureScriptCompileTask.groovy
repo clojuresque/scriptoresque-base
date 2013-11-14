@@ -46,6 +46,9 @@ public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
     @Input
     def pretty
 
+    @Input
+    def incremental
+
     @OutputDirectory
     @Delayed
     def destinationDir
@@ -82,6 +85,9 @@ public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
         def cDir = this.getClosureDir()
         if (cDir == null) {
             throw new StopExecutionException("closureDir not set!")
+        }
+        if (!incremental) {
+            FileUtil.remove(cDir)
         }
         cDir.mkdirs()
 
