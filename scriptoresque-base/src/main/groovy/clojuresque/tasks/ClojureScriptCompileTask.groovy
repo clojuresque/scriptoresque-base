@@ -25,6 +25,7 @@ package clojuresque.tasks
 
 import kotka.gradle.utils.ConfigureUtil
 import kotka.gradle.utils.Delayed
+import kotka.gradle.utils.FileUtil
 
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
