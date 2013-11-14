@@ -34,6 +34,8 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.StopExecutionException
 import org.gradle.api.tasks.TaskAction
 
+import java.io.File
+
 public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
     @Input
     def optimizations
@@ -89,7 +91,7 @@ public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
         outputFile.parent.mkdirs()
 
         List<String> options = [
-            "-i", clojureScriptRoots.srcDirs.iterator().next().path,
+            "-i", clojureScriptRoots.srcDirs.collect { it.path }.join(File.pathSeparator),
             "-d", cDir.path,
             "-o", outputFile.path,
             "-O", optimizations,
