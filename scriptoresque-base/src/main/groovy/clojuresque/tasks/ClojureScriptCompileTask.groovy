@@ -95,7 +95,7 @@ public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
         if (getOutputFileName() == null) {
             throw new StopExecutionException("outputFileName not set!")
         }
-        outputFile.parent.mkdirs()
+        outputFile.parentFile.mkdirs()
 
         List<String> options = [
             "-i", clojureScriptRoots.srcDirs.collect { it.path }.join(File.pathSeparator),
