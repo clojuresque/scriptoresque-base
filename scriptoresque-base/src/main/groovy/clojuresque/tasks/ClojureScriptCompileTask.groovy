@@ -56,6 +56,7 @@ public class ClojureScriptCompileTask extends ClojureScriptSourceTask {
     @Delayed
     def closureDir
 
+    @Input
     @Delayed
     def outputFileName
 
