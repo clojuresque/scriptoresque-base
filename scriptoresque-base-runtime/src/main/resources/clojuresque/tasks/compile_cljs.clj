@@ -9,7 +9,7 @@
 (defrecord SourcePaths [paths]
   cljsc/Compilable
   (-compile [this opts]
-    (mapcat #(closure/-compile % opts) paths)))
+    (mapcat #(cljsc/-compile % opts) paths)))
 
 (deftask main
   "Compile the clojurescript files in the named directory to the given output
