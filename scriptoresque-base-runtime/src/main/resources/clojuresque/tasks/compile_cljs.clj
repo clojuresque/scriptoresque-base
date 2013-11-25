@@ -1,4 +1,6 @@
 (ns clojuresque.tasks.compile-cljs
+  (:import
+    java.io.File)
   (:use
     [clojuresque.cli :only (deftask)])
   (:require
